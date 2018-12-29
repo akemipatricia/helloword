@@ -1,0 +1,47 @@
+---
+title: "Script para carregar pacotes rápido"
+author: "Patricia Akemi"
+date: "29 de dezembro de 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Carregar pacotes facilmente
+
+### Prática antiga
+
+Este script tem o intuito de facilitar o carregamento de pacotes no R. Evitando repetir várias vezes o mesmo comando *install.packages()* ou *library()*, exemplo:
+
+```{r}
+library(dplyr)
+library(data.table)
+library(RCurl)
+```
+
+### Prática nova
+
+Para utilizar o script corretamente, basta acrescentar o nome do pacote entre aspas no vetor *pacotes_necessarios* abaixo:
+
+```{r}
+pacotes_necessarios <- c('dplyr','data.table','RCurl')
+```
+
+Depois é só rodar o script abaixo;
+
+```{r}
+for(i in 1:length(pacotes_necessarios)){
+  if(pacotes_necessarios[i] %in% installed.packages()){
+    eval(parse(text=paste0("library(",pacotes_necessarios[i],")")))
+    cat('Pacote carregado: ',pacotes_necessarios[i],'\n')
+  } else {
+    eval(parse(text=paste0("install.packages('",pacotes_necessarios[i],"')")))
+    cat('Pacote instalado: ',pacotes_necessarios[i],'\n')
+    eval(parse(text=paste0("library(",pacotes_necessarios[i],")")))
+    cat('Pacote carregado: ',pacotes_necessarios[i],'\n')
+  }
+}
+```
+
